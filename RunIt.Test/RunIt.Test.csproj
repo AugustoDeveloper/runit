@@ -60,10 +60,10 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\Group\ApplicationGroupElementCollectionTest.cs" />
-    <Compile Include="Configuration\Group\CredentialGroupElementCollectionTest.cs" />
+    <Compile Include="Infra\Configuration\Group\ApplicationGroupElementCollectionTest.cs" />
+    <Compile Include="Infra\Configuration\Group\CredentialGroupElementCollectionTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Configuration\EnviromentConfigurationSectionTest.cs" />
+    <Compile Include="Infra\Configuration\EnviromentConfigurationSectionTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

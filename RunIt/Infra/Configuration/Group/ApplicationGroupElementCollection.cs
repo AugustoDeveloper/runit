@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using RunIt.Infra.Configuration.Element;
 
 
@@ -17,7 +18,17 @@ namespace RunIt.Infra.Configuration.Group
             }
         }
 
-        public new ApplicationElement this[string key] => (ApplicationElement)BaseGet(key);
+        public new ApplicationElement this[string key]
+        {
+            get
+            {
+                if (BaseGet(key) == null)
+                {
+                    throw new NullReferenceException($"O alias {key} não existe dentro dos nós de aplicações.");
+                }
+                return (ApplicationElement) BaseGet(key);
+            }
+        }
 
         protected override ConfigurationElement CreateNewElement()
         {

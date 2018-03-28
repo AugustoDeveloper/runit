@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using RunIt.Infra.Configuration.Element;
 
 namespace RunIt.Infra.Configuration.Group
@@ -16,9 +17,19 @@ namespace RunIt.Infra.Configuration.Group
             }
         }
 
-        public new CredentialElement this[string key] => (CredentialElement)BaseGet(key);
+        public new CredentialElement this[string key]
+        {
+            get
+            {
+                if (BaseGet(key) == null)
+                {
+                    throw new NullReferenceException($"O nome {key} não existe dentro dos nós de credenciais.");
+                }
+                return (CredentialElement)BaseGet(key);
+            }
+        }
 
-		protected override ConfigurationElement CreateNewElement()
+        protected override ConfigurationElement CreateNewElement()
 		{
             return new CredentialElement();
 		}
