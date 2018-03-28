@@ -1,25 +1,27 @@
-﻿using RunIt.Infra.Repository.LiteDb;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using RunIt.Infra.Configuration;
 using Utility.CommandLine;
 
 namespace RunIt.Infra.Interpreter
 {
     public class InterpreterCommand : ICommand
     {
-        
+        private EnviromentConfigurationSection _section;
+
         [Argument('e', "exec")]
         public static string ApplicationExecute { get; set; }
 
         public InterpreterCommand(string args)
         {
+            _section = EnviromentConfigurationSection.Get();
             var arguments = Arguments.Parse(args);
-            Arguments.Populate(this.GetType(), arguments);
+            Arguments.Populate(GetType(), arguments);
         }
 
         [Operands]
@@ -33,12 +35,12 @@ namespace RunIt.Infra.Interpreter
         private void ExecuteApplication(string credentialName)
         {
             const string runAsProgram = @"C:\Windows\System32\runas.exe";
-            var repository = new CredentialLiteDbRepository();
-            var appRepository = new ApplicationLiteDbRepository();
-            var credential = repository.GetByName(credentialName);
-            var application = appRepository.GetByAliasOrName(ApplicationExecute);
 
-            var runAsCommand = $"/netonly /user:{credential.Domain}\\{credential.Username} \"{application.FileName}\"";
+
+            var credential = _section.Credentials[credentialName];
+            var application = _section.Applications[ApplicationExecute];
+
+            var runAsCommand = $"/netonly /user:{credential.Domain}\\{credential.Username} \"{application.Filename}\"";
             var infoProcess = new ProcessStartInfo            
             {
                 CreateNoWindow = false,
@@ -60,7 +62,7 @@ namespace RunIt.Infra.Interpreter
             var handle = process.MainWindowHandle;
 
             SetForegroundWindow(handle);
-            credential.Password.ToCharArray().ToList().ForEach(c => GetPassChar(c).ToList().ForEach(s => SendKeys.SendWait(s)));
+            credential.Password.ToCharArray().ToList().ForEach(c => GetPassChar(c).ToList().ForEach(SendKeys.SendWait));
             SendKeys.SendWait("{ENTER}");
             SendKeys.Flush();
 

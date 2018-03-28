@@ -17,6 +17,8 @@ namespace RunIt.Infra.Configuration.Group
             }
         }
 
+        public ApplicationElement this[string key] => (ApplicationElement)BaseGet(key);
+
         protected override ConfigurationElement CreateNewElement()
         {
             return new ApplicationElement();
