@@ -5,12 +5,15 @@ namespace RunIt.Infra.Configuration.Element
     public class CredentialElement : ConfigurationElement
     {
         [ConfigurationProperty("name", IsKey = true)]
-        public string Name { get; set; }
+        public string Name => this["name"].ToString();
+
         [ConfigurationProperty("username", IsRequired = true)]
-        public string Username { get; set; }
+        public string Username => this["username"].ToString();
+
         [ConfigurationProperty("domain", IsRequired = true)]
-        public string Domain { get; set; }
+        public string Domain => this["domain"].ToString();
+
         [ConfigurationProperty("password", IsRequired = true)]
-        public string Password { get; set; }
+        public string Password => this["password"].ToString();
     }
 }

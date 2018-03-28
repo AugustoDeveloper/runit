@@ -16,7 +16,7 @@ namespace RunIt.Infra.Configuration.Group
             }
         }
 
-        public CredentialElement this[string key] => (CredentialElement)BaseGet(key);
+        public new CredentialElement this[string key] => (CredentialElement)BaseGet(key);
 
 		protected override ConfigurationElement CreateNewElement()
 		{

@@ -17,16 +17,21 @@ namespace RunIt.Infra.Configuration.Group
             }
         }
 
-        public ApplicationElement this[string key] => (ApplicationElement)BaseGet(key);
+        public new ApplicationElement this[string key] => (ApplicationElement)BaseGet(key);
 
         protected override ConfigurationElement CreateNewElement()
         {
             return new ApplicationElement();
         }
 
+        protected override ConfigurationElement CreateNewElement(string elementName)
+        {
+            return new ApplicationElement();
+        }
+
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((ApplicationElement)element).Name;
+            return ((ApplicationElement)element).Alias;
         }
     }
 }

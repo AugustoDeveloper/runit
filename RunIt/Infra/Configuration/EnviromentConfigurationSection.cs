@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using RunIt.Infra.Configuration.Group;
 
 namespace RunIt.Infra.Configuration
@@ -8,13 +9,20 @@ namespace RunIt.Infra.Configuration
         public const string EnviromentSectionName = "enviroment";
 
         [ConfigurationProperty("credentials")]
-        public CredentialGroupElementCollection Credentials { get; set; }
+        public CredentialGroupElementCollection Credentials => (CredentialGroupElementCollection)this["credentials"];
+
         [ConfigurationProperty("applications")]
-        public ApplicationGroupElementCollection Applications { get; set; }
+        public ApplicationGroupElementCollection Applications => (ApplicationGroupElementCollection)this["applications"];
 
         public static EnviromentConfigurationSection Get()
         {
             return ConfigurationManager.GetSection(EnviromentSectionName) as EnviromentConfigurationSection;
+        }
+
+
+        public void Set(string elementName, object value)
+        {
+            this[elementName] = value;
         }
     }
 }
