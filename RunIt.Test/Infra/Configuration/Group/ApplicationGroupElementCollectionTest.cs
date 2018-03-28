@@ -28,7 +28,7 @@ namespace RunIt.Test.Infra.Configuration.Group
                 {
                     Assert.Equal("sqlm", item.Alias);
                     Assert.Equal("SQL Management Studio", item.Name);
-                    Assert.Equal(@"\Binn\sqlmanagement.exe", item.Filename);
+                    Assert.Equal("notepad.exe", item.Filename);
                 });
         }
 
@@ -59,7 +59,7 @@ namespace RunIt.Test.Infra.Configuration.Group
             Assert.NotNull(item);
             Assert.Equal("sqlm", item.Alias);
             Assert.Equal("SQL Management Studio", item.Name);
-            Assert.Equal(@"\Binn\sqlmanagement.exe", item.Filename);
+            Assert.Equal("notepad.exe", item.Filename);
         }
     }
 }

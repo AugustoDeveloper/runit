@@ -17,15 +17,27 @@ namespace RunIt.Infra.Interpreter
         [Argument('e', "exec")]
         public static string ApplicationExecute { get; set; }
 
-        public InterpreterCommand(string args)
+        [Operands]
+        public static List<string> Operands { get; set; }
+
+        public InterpreterCommand(string[] args)
         {
+            Validate(args);
+            var newArgs = string.Join(" ", args);
+
             _section = EnviromentConfigurationSection.Get();
-            var arguments = Arguments.Parse(args);
+            var arguments = Arguments.Parse(newArgs);
+            
             Arguments.Populate(GetType(), arguments);
         }
 
-        [Operands]
-        public static List<string> Operands { get; set; }
+        private void Validate(string[] args)
+        {
+            if (args == null) throw new ArgumentNullException("args", "O parametro de argumento deve estar preenchido com valores válidos");
+            if (args.Length != 3) throw new ArgumentOutOfRangeException("Para execução correta deve ser passado três parametros.");
+            if (args[0] != "-e") throw new ArgumentException("O primeiro argumento deve ser -e, seguido da aplicacao e ambiente de credenciamento");
+            if (args[2].Contains("-") || args[1].Contains("-")) throw new ArgumentException("O segundo/terceiro argumento não deve conter hifen");
+        }
 
         public void Execute()
         {
@@ -35,7 +47,6 @@ namespace RunIt.Infra.Interpreter
         private void ExecuteApplication(string credentialName)
         {
             const string runAsProgram = @"C:\Windows\System32\runas.exe";
-
 
             var credential = _section.Credentials[credentialName];
             var application = _section.Applications[ApplicationExecute];
@@ -73,7 +84,7 @@ namespace RunIt.Infra.Interpreter
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
-        static string[] GetPassChar(char passChar)
+        private static string[] GetPassChar(char passChar)
         {
             switch (passChar)
             {
