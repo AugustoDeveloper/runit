@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunIt", "RunIt\RunIt.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RunIt.Test", "RunIt.Test\RunIt.Test.csproj", "{B194A8C2-C2D8-4B4E-BE09-E2F10F0C4BAA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "source", "source", "{28C326F6-1834-4F25-8403-DD30E6AED905}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "script", "script", "{C9B5EA3A-DF1D-4000-BB92-DDB2C84C8340}"
+	ProjectSection(SolutionItems) = preProject
+		RunIt\runit.reg = RunIt\runit.reg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +31,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DA663D99-1430-4865-8FCA-25098E17A207} = {28C326F6-1834-4F25-8403-DD30E6AED905}
+		{B194A8C2-C2D8-4B4E-BE09-E2F10F0C4BAA} = {28C326F6-1834-4F25-8403-DD30E6AED905}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EEB782E5-35E9-4874-8A40-50A24B3CA8F8}
