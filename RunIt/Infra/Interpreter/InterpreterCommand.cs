@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using RunIt.Infra.Configuration;
+using RunIt.Infra.Helper;
 using Utility.CommandLine;
 
 namespace RunIt.Infra.Interpreter
@@ -33,10 +33,25 @@ namespace RunIt.Infra.Interpreter
 
         private void Validate(string[] args)
         {
-            if (args == null) throw new ArgumentNullException("args", "O parametro de argumento deve estar preenchido com valores válidos");
-            if (args.Length != 3) throw new ArgumentOutOfRangeException("Para execução correta deve ser passado três parametros.");
-            if (args[0] != "-e") throw new ArgumentException("O primeiro argumento deve ser -e, seguido da aplicacao e ambiente de credenciamento");
-            if (args[2].Contains("-") || args[1].Contains("-")) throw new ArgumentException("O segundo/terceiro argumento não deve conter hifen");
+            if (args == null)
+            {
+                throw new ArgumentNullException("args", "O parametro de argumento deve estar preenchido com valores válidos");
+            }
+
+            if (args.Length != 3)
+            {
+                throw new ArgumentOutOfRangeException("Para execução correta deve ser passado três parametros.");
+            }
+
+            if (args[0] != "-e")
+            {
+                throw new ArgumentException("O primeiro argumento deve ser -e, seguido da aplicacao e ambiente de credenciamento");
+            }
+
+            if (args[2].Contains("-") || args[1].Contains("-"))
+            {
+                throw new ArgumentException("O segundo/terceiro argumento não deve conter hifen");
+            }
         }
 
         public void Execute()
@@ -52,13 +67,12 @@ namespace RunIt.Infra.Interpreter
             var application = _section.Applications[ApplicationExecute];
 
             var runAsCommand = $"/netonly /user:{credential.Domain}\\{credential.Username} \"{application.Filename}\"";
-            var infoProcess = new ProcessStartInfo            
+            var infoProcess = new ProcessStartInfo
             {
                 CreateNoWindow = false,
                 FileName = runAsProgram,
                 UseShellExecute = true,
-                Arguments = runAsCommand,
-
+                Arguments = runAsCommand
             };
 
             var process = new Process
@@ -72,29 +86,21 @@ namespace RunIt.Infra.Interpreter
 
             var handle = process.MainWindowHandle;
 
-            SetForegroundWindow(handle);
-            credential.Password.ToCharArray().ToList().ForEach(c => GetPassChar(c).ToList().ForEach(SendKeys.SendWait));
+            credential.Password.ToCharArray()
+                .ToList()
+                .ForEach(c => Util.GetConsoleChar(c)
+                    .ToList()
+                    .ForEach((string s) =>
+                    {
+                        // Focus on Console window
+                        Util.SetForegroundWindow(handle);
+                        SendKeys.SendWait(s);
+                    }));
+        
             SendKeys.SendWait("{ENTER}");
             SendKeys.Flush();
 
-
             process.WaitForExit();
-        }
-
-        [DllImport("user32.dll")]
-        private static extern bool SetForegroundWindow(IntPtr hWnd);
-
-        private static string[] GetPassChar(char passChar)
-        {
-            switch (passChar)
-            {
-                case '\'':
-                    return new string[] { "'", "'", "{BS}" };
-                case '`':
-                    return new string[] { "`", "`", "{BS}" };
-                default:
-                    return new string[] { passChar.ToString() };
-            }
         }
     }
 }
