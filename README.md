@@ -3,7 +3,7 @@ RunIt - It's a simple way to run Windows Applications with configured Windows Au
 
 Releases Notes
 --------------
-(Releases)[]
+[Releases](https://github.com/AugustoDeveloper/repository-runit/releases)
 
 Features
 --------
