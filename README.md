@@ -3,10 +3,7 @@ RunIt - It's a simple way to run Windows Applications with configured Windows Au
 
 Releases Notes
 --------------
-1.0.0
-- Added in configuration file a section to map which applications the users will run
-- Added in configuration file a section to map which credential the applications can use to 'Run as' on Windows
-- Added functionality to wait 'Run as' result, this way the user can see if some trouble has occurred at run.
+(Releases)[]
 
 Features
 --------
