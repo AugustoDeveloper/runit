@@ -1,4 +1,4 @@
-RunIt - It's a simple way to run Windows Applications
+RunIt - It's a simple way to run Windows Applications with configured Windows Authentication
 =====================================================
 
 Releases Notes
