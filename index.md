@@ -1,37 +1,135 @@
-## Welcome to GitHub Pages
+RunIt - It's a simple way to run Windows Applications with configured Windows Authentication
+=====================================================
 
-You can use the [editor on GitHub](https://github.com/AugustoDeveloper/runit/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Releases Notes
+--------------
+[Releases](https://github.com/AugustoDeveloper/repository-runit/releases)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Features
+--------
+RunIt automate the process of 'Run as' Authentication with simple settings:
 
-### Markdown
+Create a enviroment
+-------------------
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+~~~json
+"Env": {
+  
+}
+~~~
 
-```markdown
-Syntax highlighted code block
+Set a new application in enviroment
+-----------------------------------
+~~~json
+"Applications": [{
+            "Name": "Application name",
+            "Alias": "Application alias",
+            "Filename": "Application path with file name"
+        }]
+~~~
 
-# Header 1
-## Header 2
-### Header 3
+- Alias: this required attribute allows to RunIt run without directory and identify the application
+- Filename: this required attribute is a full filename with directory is locate de application
+- Name: this attribute describe the application.
 
-- Bulleted
-- List
+Exemple Usage:
+~~~json
+"Env": {
+  "Applications": [{
+          "Name": "Visual Studio 2019",
+          "Alias": "vs",
+          "Filename": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\devenv.exe"
+      }]
+}
+~~~
 
-1. Numbered
-2. List
+Set a new domain in enviroment
+----------------------------------
+~~~json
+"Domains" : [{
+          "Name": "Domain name",
+          "Username": "Username to authentication on domain",
+          "Password": "Password to authentication on domain",
+          "Alias": "Unique identification of domain"
+      }],
+~~~
+- name: this required attribute identify a credential
+- username: this required attribute is a username to authentication on Windows 'Run as'
+- password: this required attribute is a password to authentication on Windows 'Run as'
+- domain: this required attribute is a domain to authentication on Windows 'Run as'
 
-**Bold** and _Italic_ and `Code` text
+Example Usage:
+~~~json
+"Env": {
+        "Domains" : [{
+            "Name": "test",
+            "Username": "test",
+            "Password": "teste",
+            "Alias": "tt"
+        }],
+}
+~~~
 
-[Link](url) and ![Image](src)
-```
+This way we have a configuration
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+~~~json
+{
+    "Env": {
+        "Domains" : [{
+            "Name": "test",
+            "Username": "test",
+            "Password": "teste",
+            "Alias": "tt"
+        }],
+        "Applications": [{
+            "Name": "Visual Studio 2019",
+            "Alias": "vs",
+            "Filename": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\devenv.exe"
+        },{
+            "Name": "SQL Management",
+            "Alias": "sql",
+            "Filename": "C:\\Program Files (x86)\\Microsoft SQL Server Management Studio 18\\Common7\\IDE\\Ssms.exe"
+        }]
+    }
+}
+~~~
 
-### Jekyll Themes
+Finally, Run It!
+----------------
+Open the 'CMD' and go to RunIt assmbly folder, execute a command:
+~~~console
+bin > RunIt.exe -d tt -a sql
+~~~
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/AugustoDeveloper/runit/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+If need see log of the app use verbose arg `-v`:
+~~~console
+bin > RunIt.exe -v -d tt -a sql
+trce: RunIt.Program[0]
+      Domain St0n3.123123Zxcasqw...
+trce: RunIt.Program[0]
+      Aplication Visual Studio 2019...
+trce: RunIt.Program[0]
+      Authenticating the Visual Studio 2019 with NPADSTONE\augusto.mesquita...
+File: C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE\devenv.exe...
+trce: RunIt.Program[0]
+      Executing ...C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE\devenv.exe
+~~~
 
-### Support or Contact
+    
+    
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
